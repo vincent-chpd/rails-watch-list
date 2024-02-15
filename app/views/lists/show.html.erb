@@ -3,11 +3,30 @@
 </div>
 
 <div class="container d-flex justify-content-end mt-3">
-  <%= link_to "+ Add movie",  new_list_bookmark_path(@list), class: "btn btn-warning" %>
+  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add a bookmark</button>
   <%= link_to "Back to lists", lists_path, class: "btn btn-outline-dark" %>
   <%= link_to "Delete List", list_path(@list), class: "btn btn-danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" } %>
 </div>
 
+<%# Modal %>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel"><h3>Add a movie to your <%= @list.name %> list</h3></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render "bookmarks/form" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%# Bookmark List %>
 <div class="container d-flex justify-content-center mt-5">
   <span class="mb-2 d-block"><small><em class="text-muted"><%= "You haven't saved any movies yet!" if @list.movies.empty? %></em></small></span>
 </div>
