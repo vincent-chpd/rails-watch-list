@@ -1,15 +1,18 @@
-<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @list.photo.blank? ? 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=3259&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' : @list.photo.key, height: 300, crop: :fill %>')">
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path(@list.photo.attached? ? @list.photo.key : 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=3259&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', height: 300, crop: :fill) %>')">
   <h1><%= @list.name %></h1>
+  <%= link_to '<i class="fa-solid fa-trash"></i>'.html_safe, list_path(@list), class: "mx-5", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove your #{@list.name}?" } %>
 </div>
 
-<div class="container d-flex justify-content-end mt-3">
-  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add a bookmark</button>
-  <%= link_to "Back to lists", lists_path, class: "btn btn-outline-dark" %>
-  <%= link_to "Delete List", list_path(@list), class: "btn btn-danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" } %>
+<div class="container d-flex justify-content-between mt-3">
+  <h2>My Movies (<%= @list.movies.length %>)</h2>
+  <div>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#backdrop">Add a movie</button>
+    <%= link_to "Delete List", list_path(@list), class: "btn btn-danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" } %>
+  </div>
 </div>
 
 <%# Modal %>
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="backdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -29,4 +32,29 @@
 <%# Bookmark List %>
 <div class="container d-flex justify-content-center mt-5">
   <span class="mb-2 d-block"><small><em class="text-muted"><%= "You haven't saved any movies yet!" if @list.movies.empty? %></em></small></span>
+</div>
+
+<div class="container">
+  <div class="row my-2">
+    <% @list.movies.each do |movie| %>
+      <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+      <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in">
+        <div class="bg-white rounded shadow h-100">
+          <%= image_tag movie.poster_url, alt: movie.title, height: 300,  crop: :fill, class: "movie-img rounded-top" %>
+          <div class="p-3 rounded-bottom d-flex flex-column">
+            <strong><%= movie.title %> <span class="text-muted font-weight-normal">• <%= movie.rating %> <i class="fas fa-star star-yellow"></i></span></strong>
+            <small class="text-muted"><%= movie.overview %></small>
+            <div class="d-flex align-items-end justify-content-between pt-4">
+              <div>
+                <i class="fas fa-quote-left me-2"></i><small class="flex-grow-1"><%= bookmark.comment %></small>
+              </div>
+              <div>
+                <%= link_to '<i class="fa-solid fa-trash"></i>'.html_safe, bookmark_path(bookmark), class: "text-right", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove #{movie.title} from your #{@list.name} list" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
