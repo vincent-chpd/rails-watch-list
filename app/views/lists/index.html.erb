@@ -11,7 +11,9 @@
     </button>
   </div>
 
-
+<div class="container d-flex justify-content-center mt-5">
+  <span class="mb-2 d-block"><small><em class="text-muted"><%= "You don't have any list yet!" if @lists.empty? %></em></small></span>
+</div>
 
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -1,7 +1,7 @@
 <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @list.photo.key %>')">
   <h1><%= @list.name %></h1>
-  <%= link_to '<i class="fa-solid fa-trash"></i>'.html_safe, list_path(@list), class: "mx-5", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove your #{@list.name}?" } %>
 </div>
+<%= link_to "delete list", list_path(@list), class: "mx-1 align-right red", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove your #{@list.name}?" } %>
 
 <div class="container d-flex justify-content-between mt-3">
   <h2>My Movies (<%= @list.movies.length %>)</h2>
@@ -12,21 +12,21 @@
 
 <%# Modal %>
 <div class="modal fade" id="backdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel"><h3>Add a movie to your <%= @list.name %> list</h3></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <%= render "bookmarks/form" %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"><h3>Add a movie to your <%= @list.name %> list</h3></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render "bookmarks/form" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 <%# Bookmark List %>
 <div class="container d-flex justify-content-center mt-5">
@@ -37,9 +37,11 @@
   <div class="row my-2">
     <% @list.movies.each do |movie| %>
       <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
-      <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in">
+      <div class="col-lg-4 col-sm-6 mb-8" data-aos="zoom-in">
         <div class="bg-white rounded shadow h-100">
-          <%= image_tag movie.poster_url, alt: movie.title, height: 300,  crop: :fill, class: "movie-img rounded-top" %>
+          <div class="poster">
+            <%= image_tag movie.poster_url, alt: movie.title, height: 300, crop: :fill %>
+          </div>
           <div class="p-3 rounded-bottom d-flex flex-column">
             <strong><%= movie.title %> <span class="text-muted font-weight-normal">• <%= movie.rating %> <i class="fas fa-star star-yellow"></i></span></strong>
             <small class="text-muted"><%= movie.overview %></small>

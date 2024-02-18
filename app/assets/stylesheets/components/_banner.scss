@@ -1,7 +1,7 @@
 .banner {
   background-size: cover;
   background-position: center;
-  height: 45vh;
+  height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,4 +10,17 @@
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.align-right {
+  position: absolute;
+  right: 10px;
+}
+
+.red{
+ color: rgba(255, 0, 0, 0.491);
+}
+
+.red:hover{
+  color: red;
 }
